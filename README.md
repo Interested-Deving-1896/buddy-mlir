@@ -1,183 +1,75 @@
-# BUDDY MLIR
+[update-readmes]   Mode: rewrite — migrating to template structure...
+# buddy-mlir
 
-An MLIR-based compiler framework designed for a co-design ecosystem from DSL (domain-specific languages) to DSA (domain-specific architectures). ([Project page](https://buddy-compiler.github.io/))
+[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/buddy-mlir)
 
-## Getting Started
+<!-- AI:start:what-it-does -->
+_Description pending._
+<!-- AI:end:what-it-does -->
 
-### Dependencies
+## Architecture
 
-- **LLVM/MLIR dependencies**
+<!-- AI:start:architecture -->
+_Architecture documentation pending._
+<!-- AI:end:architecture -->
 
-Please make sure [the dependencies](https://llvm.org/docs/GettingStarted.html#requirements) are available
-on your machine.
+## Install
 
-- **Other dependencies**
-
-```
-sudo apt install flatbuffers-compiler libflatbuffers-dev libnuma-dev
-```
-
-### Clone and Initialize
-
-```
-$ git clone git@github.com:buddy-compiler/buddy-mlir.git
-$ cd buddy-mlir
-$ git submodule update --init llvm
-```
-
-### Prepare Python Environment
-
-```
-$ conda activate <your virtual environment name>
-$ cd buddy-mlir
-$ pip install -r requirements.txt
-```
-
-### Build and Test LLVM/MLIR/CLANG
-
-```
-$ cd buddy-mlir
-$ mkdir llvm/build
-$ cd llvm/build
-$ cmake -G Ninja ../llvm \
-    -DLLVM_ENABLE_PROJECTS="mlir;clang;openmp" \
-    -DLLVM_TARGETS_TO_BUILD="host;RISCV" \
-    -DLLVM_ENABLE_ASSERTIONS=ON \
-    -DOPENMP_ENABLE_LIBOMPTARGET=OFF \
-    -DCMAKE_BUILD_TYPE=RELEASE \
-    -DMLIR_ENABLE_BINDINGS_PYTHON=ON \
-    -DPython3_EXECUTABLE=$(which python3)
-$ ninja check-clang check-mlir omp
-```
-
-If your target machine includes an NVIDIA GPU, you can add the following configuration:
-
-```
--DLLVM_TARGETS_TO_BUILD="host;RISCV;NVPTX" \
--DMLIR_ENABLE_CUDA_RUNNER=ON \
-```
-
-### Build buddy-mlir
-
-```
-$ cd buddy-mlir
-$ mkdir build
-$ cd build
-$ cmake -G Ninja .. \
-    -DMLIR_DIR=$PWD/../llvm/build/lib/cmake/mlir \
-    -DLLVM_DIR=$PWD/../llvm/build/lib/cmake/llvm \
-    -DLLVM_ENABLE_ASSERTIONS=ON \
-    -DCMAKE_BUILD_TYPE=RELEASE \
-    -DBUDDY_MLIR_ENABLE_PYTHON_PACKAGES=ON \
-    -DPython3_EXECUTABLE=$(which python3)
-$ ninja
-$ ninja check-buddy
-```
-
-Set the `PYTHONPATH` environment variable to include both the LLVM/MLIR Python bindings and `buddy-mlir` Python packages:
-
-```
-$ export BUDDY_MLIR_BUILD_DIR=$PWD
-$ export LLVM_MLIR_BUILD_DIR=$PWD/../llvm/build
-$ export PYTHONPATH=${BUDDY_MLIR_BUILD_DIR}/python_packages:${PYTHONPATH}
-```
-
-If you want to test your model end-to-end conversion and inference, you can add the following configuration
-
-```
-$ cmake -G Ninja .. -DBUDDY_ENABLE_E2E_TESTS=ON
-$ ninja check-e2e
-```
-
-### Building and running the model
-
-Build the model, produce the shared library, and pack it into FlatBuffers:
-
-```
-ninja deepseek_r1_model_so
-ninja deepseek_r1_rax
-```
-
-Run the model:
-
-```
-./bin/buddy-cli \
-  --model ./models/deepseek_r1/deepseek_r1.rax \
-  --prompt "Tell me a joke in 200 words."
-
-
-# Equivalent to: numactl --cpunodebind=0,1,2,3 --interleave=0,1,2,3 taskset -c 0-47
-./bin/buddy-cli \
-  --numa 0,1,2,3 \
-  --cpus 0-47 \
-  --model ./models/deepseek_r1/deepseek_r1.rax \
-  --prompt "Tell me a joke in 200 words."
-```
-
-## Build Python Package
-
-We use `setuptools` to bundle CMake outputs (Python packages, `bin/`, and
-`lib/`) into a single wheel.
-
-Build x86_64 artifacts:
+<!-- Add installation instructions here. This section is yours — the AI will not modify it. -->
 
 ```bash
-./scripts/release_wheel_manylinux.sh cp310-cp310 x86_64
+git clone https://github.com/Interested-Deving-1896/buddy-mlir.git
+cd buddy-mlir
 ```
 
-Build riscv64 artifacts:
+## Usage
 
-```bash
-./scripts/release_wheel_manylinux.sh cp310-cp310 riscv64
-```
+<!-- Add usage examples here. This section is yours — the AI will not modify it. -->
 
-This script calls `docker run` internally to enter the offical manylinux container,
-builds LLVM and buddy_mlir, and writes artifacts to:
+## Configuration
 
-- `./build-docker/x86_64/<py_tag>/target`
-- `./build-docker/riscv64/<py_tag>/target`
+<!-- Document configuration options here. This section is yours — the AI will not modify it. -->
 
-See [Manylinux release notes](./docs/ManylinuxReleaseNotes.md) for current
-known build notes.
+## CI
 
-Install and test the wheel:
+<!-- AI:start:ci -->
+_CI documentation pending._
+<!-- AI:end:ci -->
 
-```bash
-pip install buddy-*.whl --no-deps
-python -c "import buddy; import buddy_mlir; print('ok')"
-buddy-opt --help
-```
+## Mirror chain
 
-## Examples
-
-We provide examples to demonstrate how to use the passes and interfaces in `buddy-mlir`, including IR-level transformations, domain-specific applications, and testing demonstrations.
-
-For more details, please see the [examples documentation](./examples/README.md).
-
-## Contributions
-
-We welcome contributions to our open-source project!
-
-Before contributing, please read the [Contributor Guide](https://buddycompiler.com/Pages/ContributorGuide.html) and [Code Style](https://buddycompiler.com/Pages/Documentation/CodeStyle.html).
-
-To maintain code quality, this project provides pre-commit checks:
+<!-- AI:start:mirror-chain -->
+This repo is maintained in [`Interested-Deving-1896/buddy-mlir`](https://github.com/Interested-Deving-1896/buddy-mlir) and mirrored through:
 
 ```
-$ pre-commit install
+Interested-Deving-1896/buddy-mlir  ──►  OpenOS-Project-OSP/buddy-mlir  ──►  OpenOS-Project-Ecosystem-OOC/buddy-mlir
 ```
 
-## How to Cite
+Changes flow downstream automatically via the hourly mirror chain in
+[`fork-sync-all`](https://github.com/Interested-Deving-1896/fork-sync-all).
+Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-Deving-1896`.
+<!-- AI:end:mirror-chain -->
 
-If you find our project and research useful or refer to it in your own work, please cite the survey paper in which the Buddy Compiler design was first proposed:
+## Contributors
 
-```
-@article{zhang2023compiler,
-  title={Compiler Technologies in Deep Learning Co-Design: A Survey},
-  author={Zhang, Hongbin and Xing, Mingjie and Wu, Yanjun and Zhao, Chen},
-  journal={Intelligent Computing},
-  year={2023},
-  publisher={AAAS}
-}
-```
+<!-- AI:start:contributors -->
+_Contributors pending._
+<!-- AI:end:contributors -->
 
-For direct access to the paper, please visit [Compiler Technologies in Deep Learning Co-Design: A Survey](https://spj.science.org/doi/10.34133/icomputing.0040).
+## Origins
+
+<!-- AI:start:origins -->
+_Original project — no upstream fork._
+<!-- AI:end:origins -->
+
+## Resources
+
+<!-- AI:start:resources -->
+_No additional resource files found._
+<!-- AI:end:resources -->
+
+## License
+
+<!-- AI:start:license -->
+<!-- License not detected — add a LICENSE file to this repo. -->
+<!-- AI:end:license -->
